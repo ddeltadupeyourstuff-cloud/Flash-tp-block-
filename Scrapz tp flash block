@@ -1,0 +1,86 @@
+-- Scrapz flash tp block (Blue UI + Rename)
+
+print("Loading Scrapz flash tp block with blue UI...")
+
+-- Load the original hub
+loadstring(game:HttpGet("https://raw.githubusercontent.com/dadas45845/limitedhublph/refs/heads/main/FlashAndBlock"))()
+
+wait(2)  -- Extra time for the GUI to fully load
+
+-- Rename the title
+local found = false
+local blueColor = Color3.fromRGB(0, 102, 255)   -- Main blue
+local darkBlue = Color3.fromRGB(0, 60, 150)     -- Darker accents
+local lightBlue = Color3.fromRGB(100, 180, 255) -- Lighter highlights
+
+for _, gui in ipairs(game:GetService("CoreGui"):GetDescendants()) do
+    if gui:IsA("ScreenGui") then
+        for _, child in ipairs(gui:GetDescendants()) do
+            -- Rename title
+            if (child:IsA("TextLabel") or child:IsA("TextButton")) then
+                if child.Text and (child.Text:find("LIMITED HUB") or child.Text:upper():find("LIMITED")) then
+                    child.Text = "Scrapz flash tp block"
+                    found = true
+                end
+            end
+            
+            -- Change colors to blue
+            if child:IsA("Frame") or child:IsA("TextButton") or child:IsA("TextLabel") then
+                if child.BackgroundColor3 then
+                    -- Change dark/black backgrounds to blue tones
+                    local r, g, b = child.BackgroundColor3.R, child.BackgroundColor3.G, child.BackgroundColor3.B
+                    if (r + g + b) < 0.6 then  -- Dark elements
+                        child.BackgroundColor3 = darkBlue
+                    elseif (r + g + b) > 1.2 then  -- Light elements
+                        child.BackgroundColor3 = lightBlue
+                    else
+                        child.BackgroundColor3 = blueColor
+                    end
+                end
+                
+                if child:IsA("TextLabel") or child:IsA("TextButton") then
+                    child.TextColor3 = Color3.new(1, 1, 1)  -- White text for contrast
+                end
+            end
+        end
+    end
+end
+
+-- Backup search in PlayerGui
+local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+if playerGui then
+    for _, gui in ipairs(playerGui:GetDescendants()) do
+        if gui:IsA("ScreenGui") then
+            for _, child in ipairs(gui:GetDescendants()) do
+                if (child:IsA("TextLabel") or child:IsA("TextButton")) then
+                    if child.Text and (child.Text:find("LIMITED HUB") or child.Text:upper():find("LIMITED")) then
+                        child.Text = "Scrapz flash tp block"
+                        found = true
+                    end
+                end
+                
+                if child:IsA("Frame") or child:IsA("TextButton") or child:IsA("TextLabel") then
+                    if child.BackgroundColor3 then
+                        local r, g, b = child.BackgroundColor3.R, child.BackgroundColor3.G, child.BackgroundColor3.B
+                        if (r + g + b) < 0.6 then
+                            child.BackgroundColor3 = darkBlue
+                        elseif (r + g + b) > 1.2 then
+                            child.BackgroundColor3 = lightBlue
+                        else
+                            child.BackgroundColor3 = blueColor
+                        end
+                    end
+                    if child:IsA("TextLabel") or child:IsA("TextButton") then
+                        child.TextColor3 = Color3.new(1, 1, 1)
+                    end
+                end
+            end
+        end
+    end
+end
+
+if found then
+    print("✅ Scrapz flash tp block loaded with blue UI!")
+else
+    print("⚠️ Hub loaded, but title rename/color change might need running again.")
+end
